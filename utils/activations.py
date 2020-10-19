@@ -10,11 +10,11 @@ class Swish(nn.Module):  #
         return x * torch.sigmoid(x)
 
 
-class Hardswish(nn.Module):  # export-friendly version of nn.Hardswish()
+class Hardswish(nn.Module):  # alternative to nn.Hardswish() for export
     @staticmethod
     def forward(x):
-        # return x * F.hardsigmoid(x)  # for torchscript and CoreML
-        return x * F.hardtanh(x + 3, 0., 6.) / 6.  # for torchscript, CoreML and ONNX
+        # return x * F.hardsigmoid(x)
+        return x * F.hardtanh(x + 3, 0., 6.) / 6.
 
 
 class MemoryEfficientSwish(nn.Module):

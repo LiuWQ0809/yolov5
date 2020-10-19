@@ -1,5 +1,6 @@
 import argparse
 import os
+import platform
 import shutil
 import time
 from pathlib import Path
@@ -20,7 +21,7 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized
 def detect(save_img=False):
     out, source, weights, view_img, save_txt, imgsz = \
         opt.output, opt.source, opt.weights, opt.view_img, opt.save_txt, opt.img_size
-    webcam = source.isnumeric() or source.startswith(('rtsp://', 'rtmp://', 'http://')) or source.endswith('.txt')
+    webcam = source == '0' or source.startswith('rtsp') or source.startswith('http') or source.endswith('.txt')
 
     # Initialize
     set_logging()
@@ -139,6 +140,8 @@ def detect(save_img=False):
 
     if save_txt or save_img:
         print('Results saved to %s' % Path(out))
+        if platform.system() == 'Darwin' and not opt.update:  # MacOS
+            os.system('open ' + save_path)
 
     print('Done. (%.3fs)' % (time.time() - t0))
 
