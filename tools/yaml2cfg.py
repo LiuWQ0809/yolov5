@@ -1,5 +1,6 @@
 import torch
 import argparse
+sys.path.append("..") 
 from utils.google_utils import *
 import struct
 import yaml
@@ -63,7 +64,7 @@ if __name__ == '__main__':
     parser.add_argument('--net_w', type=int, default=640, help='net width (pixels)')
     parser.add_argument('--net_h', type=int, default=640, help='net height (pixels)')
     parser.add_argument('--batch', type=int, default=1, help='inference batch size')
-    parser.add_argument('--classes', type=int,default=80, help='filter by class: --class 0, or --class 0 2 3')
+    parser.add_argument('--classes', type=int,default=10, help='filter by class: --class 0, or --class 0 2 3')
     opt = parser.parse_args()
     print(opt)
     attempt_download(opt.weights)

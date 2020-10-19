@@ -238,6 +238,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--cfg', type=str, default='cfg/yolov5s.cfg', help='cfg file path')
+    parser.add_argument('--yaml', type=str, default='cfg/yolov5s.yaml', help='cfg file path')
     parser.add_argument('--data', type=str, default='data/bdd.yaml', help='*.data file path')
     parser.add_argument('--weights', type=str, default='weights/last.pt', help='sparse model weights')
     parser.add_argument('--percent', type=float, default=0.6, help='channel prune percent')
@@ -252,7 +253,7 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = Darknet(opt.cfg, (img_size, img_size)).to(device)
 
-    modelyolov5 = Model(opt.cfg, nc=2).to(device)
+    modelyolov5 = Model(opt.yaml, nc=2).to(device)
 
     # if opt.model:
     #     if opt.model.endswith(".pt"):
