@@ -24,8 +24,6 @@ def test(cfg,
     if model is None:
         device = torch_utils.select_device(opt.device)
         verbose = True
-        import pdb
-        pdb.set_trace()
         # Initialize model
         if (model_name == "darknet"):
             model = Darknet(cfg, img_size).to(device)
@@ -50,7 +48,8 @@ def test(cfg,
     data = parse_data_cfg(data)
     nc = int(data['nc'])  # number of classes
     test_path = data['val']  # path to test images
-    names = load_classes(data['names'])  # class names
+    # names = load_classes(data['names'])  # class names
+    names = data['names'][2:-2].split("', '")
 
     # Dataloader
     dataset = LoadImagesAndLabels(test_path, img_size, batch_size)
