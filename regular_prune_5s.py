@@ -416,7 +416,7 @@ if __name__ == '__main__':
     print("\nlet's test the original model first:")
 
     with torch.no_grad():
-        origin_model_metric = test_ori(data=opt.data, opt=opt, weights=modelyolov5, batch_size=96, imgsz=img_size)
+        origin_model_metric = test_ori(data=opt.data, opt=opt, weights=opt.weights, batch_size=96, imgsz=img_size)
     origin_nparameters = obtain_num_parameters(model)
 
 
