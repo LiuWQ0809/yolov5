@@ -406,7 +406,8 @@ if __name__ == '__main__':
     #      save_json=False,
     #      model=model)
 
-    eval_model = lambda model:test(model=modelyolov5,cfg=opt.yaml, data=opt.data, batch_size=96, img_size=img_size)
+    eval_model_ori = lambda model:test(model=modelyolov5,cfg=opt.yaml, data=opt.data, batch_size=96, img_size=img_size)
+    eval_model = lambda model:test(model=model,cfg=opt.cfg, data=opt.data, batch_size=96, img_size=img_size)
 
 
     obtain_num_parameters = lambda model:sum([param.nelement() for param in model.parameters()])
@@ -414,8 +415,8 @@ if __name__ == '__main__':
     print("\nlet's test the original model first:")
 
     with torch.no_grad():
-        origin_model_metric = eval_model(model)
-    origin_nparameters = obtain_num_parameters(model)
+        origin_model_metric = eval_model_ori(modelyolov5)
+    origin_nparameters = obtain_num_parameters(modelyolov5)
 
 
     CBL_idx, Conv_idx, prune_idx= parse_module_defs(model.module_defs)
