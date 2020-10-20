@@ -415,8 +415,8 @@ if __name__ == '__main__':
 
     print("\nlet's test the original model first:")
 
-    with torch.no_grad():
-        origin_model_metric = test_ori(data=opt.data, opt=opt, weights=opt.weights, batch_size=32, imgsz=img_size)
+    # with torch.no_grad():
+    #     origin_model_metric = test_ori(data=opt.data, opt=opt, weights=opt.weights, batch_size=32, imgsz=img_size)
     origin_nparameters = obtain_num_parameters(model)
 
 
@@ -494,14 +494,14 @@ if __name__ == '__main__':
         compact_model_metric = eval_model(compact_model)
 
 
-    # 比较剪枝前后参数数量的变化、指标性能的变化
-    metric_table = [
-        ["Metric", "Before", "After"],
-        ["mAP", f'{origin_model_metric[1].mean():.6f}', f'{compact_model_metric[1].mean():.6f}'],
-        ["Parameters", f"{origin_nparameters}", f"{compact_nparameters}"],
-        ["Inference", f'{pruned_forward_time:.4f}', f'{compact_forward_time:.4f}']
-    ]
-    print(AsciiTable(metric_table).table)
+    # # 比较剪枝前后参数数量的变化、指标性能的变化
+    # metric_table = [
+    #     ["Metric", "Before", "After"],
+    #     ["mAP", f'{origin_model_metric[1].mean():.6f}', f'{compact_model_metric[1].mean():.6f}'],
+    #     ["Parameters", f"{origin_nparameters}", f"{compact_nparameters}"],
+    #     ["Inference", f'{pruned_forward_time:.4f}', f'{compact_forward_time:.4f}']
+    # ]
+    # print(AsciiTable(metric_table).table)
 
 
 
