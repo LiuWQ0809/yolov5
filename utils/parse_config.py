@@ -36,9 +36,7 @@ def parse_data_cfg(path):
         line = line.strip()
         if line == '' or line.startswith('#'):
             continue
-        import pdb
-        pdb.set_trace()
-        key, val = line.split('=')
+        key, val = line.split(': ')
         options[key.strip()] = val.strip()
 
     return options

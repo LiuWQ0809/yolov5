@@ -259,7 +259,7 @@ def prune_and_eval(model, sorted_bn, percent=.0):
 
         # bn_module = model_copy.module_list[idx][1]
         bn_module = model_copy.module_list[idx][1] if type(
-            model_copy.module_list[idx][1]).__name__ is 'BatchNorm2d' else model_copy.module_list[idx][0]
+            model_copy.module_list[idx][1]).__name__ == 'BatchNorm2d' else model_copy.module_list[idx][0]
 
         mask = obtain_bn_mask(bn_module, thre)
         mask_cnt=int(mask.sum())
@@ -406,7 +406,7 @@ if __name__ == '__main__':
     #      save_json=False,
     #      model=model)
 
-    eval_model = lambda model:test(model=model,cfg=opt.cfg, data=opt.data, batch_size=96, img_size=img_size)
+    eval_model = lambda model:test(model=modelyolov5,cfg=opt.yaml, data=opt.data, batch_size=96, img_size=img_size)
 
 
     obtain_num_parameters = lambda model:sum([param.nelement() for param in model.parameters()])
@@ -432,7 +432,8 @@ if __name__ == '__main__':
     for idx in prune_idx:
         #.item()可以得到张量里的元素值
         # highest_thre.append(model.module_list[idx][1].weight.data.abs().max().item())
-        highest_thre.append(model.module_list[idx][1].weight.data.abs().max().item() if type(model.module_list[idx][1]).__name__ is 'BatchNorm2d' else model.module_list[idx][0].weight.data.abs().max().item())
+        highest_thre.append(model.module_list[idx][1].weight.data.abs().max().item() if type(
+            model.module_list[idx][1]).__name__ == 'BatchNorm2d' else model.module_list[idx][0].weight.data.abs().max().item())
     highest_thre = min(highest_thre)
 
     # 找到highest_thre对应的下标对应的百分比

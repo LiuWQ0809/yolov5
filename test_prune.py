@@ -17,15 +17,21 @@ def test(cfg,
          conf_thres=0.001,
          nms_thres=0.5,
          save_json=False,
-         model=None):
+         model=None,
+         model_name="darknet"):
     
     # Initialize/load model and set device
     if model is None:
         device = torch_utils.select_device(opt.device)
         verbose = True
-
+        import pdb
+        pdb.set_trace()
         # Initialize model
-        model = Darknet(cfg, img_size).to(device)
+        if (model_name == "darknet"):
+            model = Darknet(cfg, img_size).to(device)
+        else:
+            model = torch.load(weights, map_location=device)['model'].float()
+            
 
         # Load weights
         attempt_download(weights)
@@ -42,8 +48,8 @@ def test(cfg,
 
     # Configure run
     data = parse_data_cfg(data)
-    nc = int(data['classes'])  # number of classes
-    test_path = data['valid']  # path to test images
+    nc = int(data['nc'])  # number of classes
+    test_path = data['val']  # path to test images
     names = load_classes(data['names'])  # class names
 
     # Dataloader
