@@ -55,14 +55,17 @@ def test_prune(cfg,
 
     model.eval()
     # Dataloader
-    with torch_distributed_zero_first(-1):
-        dataset = LoadImagesAndLabels(test_path, img_size, batch_size)
-    batch_size = min(batch_size, len(dataset))
-    dataloader = DataLoader(dataset,
-                            batch_size=batch_size,
-                            num_workers=min([os.cpu_count(), batch_size, 16]),
-                            pin_memory=True,
-                            collate_fn=dataset.collate_fn)
+    # with torch_distributed_zero_first(-1):
+    #     dataset = LoadImagesAndLabels(test_path, img_size, batch_size)
+    # batch_size = min(batch_size, len(dataset))
+    # dataloader = DataLoader(dataset,
+    #                         batch_size=batch_size,
+    #                         num_workers=min([os.cpu_count(), batch_size, 16]),
+    #                         pin_memory=True,
+    #                         collate_fn=LoadImagesAndLabels.collate_fn)
+    opt.single_cls = False
+    dataloader = create_dataloader(test_path, img_size, batch_size, model.stride.max(), opt,
+                                    hyp=None, augment=False, cache=False, pad=0.5, rect=True)[0]
 
 
     seen = 0
