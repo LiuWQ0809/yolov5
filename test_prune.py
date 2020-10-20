@@ -3,6 +3,8 @@ import json
 
 from torch.utils.data import DataLoader
 
+from utils.datasets import create_dataloader
+
 from models_prune import *
 from utils.datasets import *
 from utils.utils import *
@@ -53,12 +55,15 @@ def test_prune(cfg,
 
     model.eval()
     # Dataloader
-    dataset = LoadImagesAndLabels(test_path, img_size, batch_size)
+    with torch_distributed_zero_first(-1):
+        dataset = LoadImagesAndLabels(test_path, img_size, batch_size)
+    batch_size = min(batch_size, len(dataset))
     dataloader = DataLoader(dataset,
                             batch_size=batch_size,
                             num_workers=min([os.cpu_count(), batch_size, 16]),
                             pin_memory=True,
                             collate_fn=dataset.collate_fn)
+
 
     seen = 0
     
