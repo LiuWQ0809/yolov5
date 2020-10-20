@@ -407,7 +407,7 @@ if __name__ == '__main__':
     #      save_json=False,
     #      model=model)
 
-    eval_model_ori = lambda model:test(model=modelyolov5,cfg=opt.yaml, data=opt.data, batch_size=96, img_size=img_size)
+    eval_model_ori = lambda model:test(weights=modelyolov5, data=opt.data, batch_size=96, imgsz=img_size)
     eval_model = lambda model:test_prune(model=model,cfg=opt.cfg, data=opt.data, batch_size=96, img_size=img_size)
 
 
