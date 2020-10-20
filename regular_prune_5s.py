@@ -4,7 +4,7 @@ import torch
 import numpy as np
 from copy import deepcopy
 from test_prune import test_prune
-from test import test
+from test import test, test_ori
 from terminaltables import AsciiTable
 import time
 from utils.utils import *
@@ -407,7 +407,7 @@ if __name__ == '__main__':
     #      save_json=False,
     #      model=model)
 
-    eval_model_ori = lambda model:test(weights=modelyolov5, data=opt.data, batch_size=96, imgsz=img_size)
+    # eval_model_ori = lambda model:test(weights=modelyolov5, data=opt.data, batch_size=96, imgsz=img_size)
     eval_model = lambda model:test_prune(model=model,cfg=opt.cfg, data=opt.data, batch_size=96, img_size=img_size)
 
 
@@ -416,7 +416,7 @@ if __name__ == '__main__':
     print("\nlet's test the original model first:")
 
     with torch.no_grad():
-        origin_model_metric = eval_model_ori(modelyolov5)
+        origin_model_metric = test_ori(data=opt.data, opt=opt, weights=modelyolov5, batch_size=96, imgsz=img_size)
     origin_nparameters = obtain_num_parameters(model)
 
 
