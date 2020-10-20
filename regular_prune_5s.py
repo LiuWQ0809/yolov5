@@ -11,6 +11,7 @@ from utils.prune_utils import *
 import os
 import pdb
 import argparse
+from utils.torch_utils import select_device
 
 #规整剪枝
 # class opt():
@@ -369,10 +370,11 @@ if __name__ == '__main__':
     parser.add_argument('--weights', type=str, default='weights/last.pt', help='sparse model weights')
     parser.add_argument('--percent', type=float, default=0.6, help='channel prune percent')
     parser.add_argument('--img_size', type=int, default=640, help='inference size (pixels)')
+    parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
     opt = parser.parse_args()
 
     #指定GPU
-    # torch.cuda.set_device(2)
+    torch.cuda.set_device(opt.device)
 
     percent = opt.percent
     filter_switch=[8,16,32,64,128,256,512,1024]
