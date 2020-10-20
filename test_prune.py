@@ -8,7 +8,7 @@ from utils.datasets import *
 from utils.utils import *
 
 
-def test(cfg,
+def test_prune(cfg,
          data,
          weights=None,
          batch_size=16,
@@ -17,7 +17,8 @@ def test(cfg,
          conf_thres=0.001,
          nms_thres=0.5,
          save_json=False,
-         model=None):
+         model=None,
+         model_name="darknet"):
     
     # Initialize/load model and set device
     if model is None:
@@ -52,15 +53,12 @@ def test(cfg,
 
     model.eval()
     # Dataloader
-    # dataset = LoadImagesAndLabels(test_path, img_size, batch_size)
-    # dataloader = DataLoader(dataset,
-    #                         batch_size=batch_size,
-    #                         num_workers=min([os.cpu_count(), batch_size, 16]),
-    #                         pin_memory=True,
-    #                         collate_fn=dataset.collate_fn)
-    img = torch.zeros((1, 3, img_size, img_size), device=device)  # init img
-    dataloader = create_dataloader(test_path, img_size, batch_size, model.stride.max(), opt,
-                                    hyp=None, augment=False, cache=False, pad=0.5, rect=True)[0]
+    dataset = LoadImagesAndLabels(test_path, img_size, batch_size)
+    dataloader = DataLoader(dataset,
+                            batch_size=batch_size,
+                            num_workers=min([os.cpu_count(), batch_size, 16]),
+                            pin_memory=True,
+                            collate_fn=dataset.collate_fn)
 
     seen = 0
     
@@ -70,6 +68,7 @@ def test(cfg,
     loss = torch.zeros(3)
     jdict, stats, ap, ap_class = [], [], [], []
     for batch_i, (imgs, targets, paths, shapes) in enumerate(tqdm(dataloader, desc=s)):
+        imgs = torch.div(imgs, 255.0)
         targets = targets.to(device)
         imgs = imgs.to(device)
         _, _, height, width = imgs.shape  # batch size, channels, height, width
