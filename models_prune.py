@@ -171,6 +171,7 @@ class YOLOLayer(nn.Module):
                 create_grids(self, img_size, (nx, ny), p.device, p.dtype)
 
         # p.view(bs, 255, 13, 13) -- > (bs, 3, 13, 13, 85)  # (bs, anchors, grid, grid, classes + xywh)
+        
         p = p.view(bs, self.na, self.nc + 5, self.ny, self.nx).permute(0, 1, 3, 4, 2).contiguous()  # prediction
 
         if self.training:
