@@ -415,7 +415,7 @@ if __name__ == '__main__':
     print("\nlet's test the original model first:")
 
     with torch.no_grad():
-        origin_model_metric = eval_model_ori(model)
+        origin_model_metric = eval_model(model)
     origin_nparameters = obtain_num_parameters(model)
 
 
