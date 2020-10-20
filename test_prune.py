@@ -65,7 +65,7 @@ def test_prune(cfg,
     #                         pin_memory=True,
     #                         collate_fn=LoadImagesAndLabels.collate_fn)
     opt.single_cls = False
-    dataloader = create_dataloader(test_path, img_size, batch_size, model.stride.max(), opt,
+    dataloader = create_dataloader(test_path, img_size, batch_size, 32, opt,
                                     hyp=None, augment=False, cache=False, pad=0.5, rect=True)[0]
 
 
