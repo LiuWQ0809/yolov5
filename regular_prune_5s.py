@@ -374,13 +374,15 @@ if __name__ == '__main__':
     opt = parser.parse_args()
 
     #指定GPU
-    torch.cuda.set_device(opt.device)
+    # torch.cuda.set_device(opt.device)
 
     percent = opt.percent
     filter_switch=[8,16,32,64,128,256,512,1024]
     img_size = opt.img_size
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = select_device(opt.device, batch_size=96)
+
+    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = Darknet(opt.cfg, (img_size, img_size)).to(device)
 
     # data_config = parse_data_cfg(opt.data_config)
