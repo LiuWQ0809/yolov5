@@ -12,6 +12,7 @@ from utils.utils import *
 
 def test_prune(cfg,
          data,
+         opt,
          weights=None,
          batch_size=16,
          img_size=416,
