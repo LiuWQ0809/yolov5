@@ -17,8 +17,7 @@ def test(cfg,
          conf_thres=0.001,
          nms_thres=0.5,
          save_json=False,
-         model=None,
-         model_name="darknet"):
+         model=None):
     
     # Initialize/load model and set device
     if model is None:
@@ -51,16 +50,20 @@ def test(cfg,
     # names = load_classes(data['names'])  # class names
     names = data['names'][2:-2].split("', '")
 
+    model.eval()
     # Dataloader
-    dataset = LoadImagesAndLabels(test_path, img_size, batch_size)
-    dataloader = DataLoader(dataset,
-                            batch_size=batch_size,
-                            num_workers=min([os.cpu_count(), batch_size, 16]),
-                            pin_memory=True,
-                            collate_fn=dataset.collate_fn)
+    # dataset = LoadImagesAndLabels(test_path, img_size, batch_size)
+    # dataloader = DataLoader(dataset,
+    #                         batch_size=batch_size,
+    #                         num_workers=min([os.cpu_count(), batch_size, 16]),
+    #                         pin_memory=True,
+    #                         collate_fn=dataset.collate_fn)
+    img = torch.zeros((1, 3, img_size, img_size), device=device)  # init img
+    dataloader = create_dataloader(test_path, img_size, batch_size, model.stride.max(), opt,
+                                    hyp=None, augment=False, cache=False, pad=0.5, rect=True)[0]
 
     seen = 0
-    model.eval()
+    
     coco91class = coco80_to_coco91_class()
     s = ('%20s' + '%10s' * 6) % ('Class', 'Images', 'Targets', 'P', 'R', 'mAP', 'F1')
     p, r, f1, mp, mr, map, mf1 = 0., 0., 0., 0., 0., 0., 0.
